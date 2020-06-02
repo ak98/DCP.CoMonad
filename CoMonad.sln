@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CoMonad.shared", "src\Shared\CoMonad.shared\CoMonad.shared.shproj", "{0FC6734B-57D7-448D-98B7-FFC1B6D459AB}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CoMonadAsyncEumerable.shared", "src\Shared\CoMonadAsyncEumerable.shared\CoMonadAsyncEumerable.shared.shproj", "{6F8FA5CB-559A-46CC-93DB-24FD8E251EBD}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ComonadValueTask.shared", "src\Shared\ComonadValueTask.shared\ComonadValueTask.shared.shproj", "{A1C6F299-765A-441C-946C-38F58AB9E1AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{708BB01B-7969-4EAB-B807-4E1A36A2B4DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetFramework", "NetFramework", "{459522AF-ABA2-48C6-8D79-C688C9D556F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoMonadNet45", "src\NetFrameWork\CoMonadNet45\CoMonadNet45.csproj", "{232061D2-C674-4E63-9C16-C56A5BF478ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoMonadNet45IA", "src\NetFrameWork\CoMonadNet45IA\CoMonadNet45IA.csproj", "{E56C7F5A-B005-4FC2-A523-E7C635698EE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoMonadNet45VT", "src\NetFrameWork\CoMonadNet45VT\CoMonadNet45VT.csproj", "{07235160-1789-4FFA-A39C-2FE9E2AC1CEB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore", "NetCore", "{F0293DDE-A556-4B6A-AF00-6B2A92A1C415}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoMonad", "src\NetCore\CoMonad\CoMonad.csproj", "{E49898E1-105E-4E48-AC24-F869572830C6}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Shared\ComonadValueTask.shared\ComonadValueTask.shared.projitems*{07235160-1789-4ffa-a39c-2fe9e2ac1ceb}*SharedItemsImports = 4
+		src\Shared\CoMonad.shared\Comonad.shared.projitems*{0fc6734b-57d7-448d-98b7-ffc1b6d459ab}*SharedItemsImports = 13
+		src\Shared\CoMonad.shared\Comonad.shared.projitems*{232061d2-c674-4e63-9c16-c56a5bf478ed}*SharedItemsImports = 4
+		src\Shared\CoMonadAsyncEumerable.shared\CoMonadAsyncEumerable.shared.projitems*{6f8fa5cb-559a-46cc-93db-24fd8e251ebd}*SharedItemsImports = 13
+		src\Shared\ComonadValueTask.shared\ComonadValueTask.shared.projitems*{a1c6f299-765a-441c-946c-38f58ab9e1af}*SharedItemsImports = 13
+		src\Shared\CoMonadAsyncEumerable.shared\CoMonadAsyncEumerable.shared.projitems*{e56c7f5a-b005-4fc2-a523-e7c635698ee9}*SharedItemsImports = 4
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{232061D2-C674-4E63-9C16-C56A5BF478ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{232061D2-C674-4E63-9C16-C56A5BF478ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{232061D2-C674-4E63-9C16-C56A5BF478ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{232061D2-C674-4E63-9C16-C56A5BF478ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E56C7F5A-B005-4FC2-A523-E7C635698EE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E56C7F5A-B005-4FC2-A523-E7C635698EE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E56C7F5A-B005-4FC2-A523-E7C635698EE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E56C7F5A-B005-4FC2-A523-E7C635698EE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07235160-1789-4FFA-A39C-2FE9E2AC1CEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07235160-1789-4FFA-A39C-2FE9E2AC1CEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07235160-1789-4FFA-A39C-2FE9E2AC1CEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07235160-1789-4FFA-A39C-2FE9E2AC1CEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E49898E1-105E-4E48-AC24-F869572830C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E49898E1-105E-4E48-AC24-F869572830C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E49898E1-105E-4E48-AC24-F869572830C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E49898E1-105E-4E48-AC24-F869572830C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0FC6734B-57D7-448D-98B7-FFC1B6D459AB} = {708BB01B-7969-4EAB-B807-4E1A36A2B4DE}
+		{6F8FA5CB-559A-46CC-93DB-24FD8E251EBD} = {708BB01B-7969-4EAB-B807-4E1A36A2B4DE}
+		{A1C6F299-765A-441C-946C-38F58AB9E1AF} = {708BB01B-7969-4EAB-B807-4E1A36A2B4DE}
+		{232061D2-C674-4E63-9C16-C56A5BF478ED} = {459522AF-ABA2-48C6-8D79-C688C9D556F2}
+		{E56C7F5A-B005-4FC2-A523-E7C635698EE9} = {459522AF-ABA2-48C6-8D79-C688C9D556F2}
+		{07235160-1789-4FFA-A39C-2FE9E2AC1CEB} = {459522AF-ABA2-48C6-8D79-C688C9D556F2}
+		{E49898E1-105E-4E48-AC24-F869572830C6} = {F0293DDE-A556-4B6A-AF00-6B2A92A1C415}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BBBB3C33-67A0-4C23-9539-9CFBA9E75DD0}
+	EndGlobalSection
+EndGlobal

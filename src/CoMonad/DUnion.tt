@@ -1,0 +1,275 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+using System;
+using System.Text;
+using System.Reflection;
+namespace CoMonad
+{
+    /// <summary>
+    /// A type that represents a disjunction of types (Discriminated Union), choice from multiple different types e.g. T1 or T2 or T3.
+    /// </summary>
+    public abstract class DUnion
+    {
+        protected DUnion(byte arity, byte discriminator, object value)
+        {
+            if (arity <= 0)
+            {
+                throw new ArgumentException("The arity must be a positive number.");
+            }
+            if (discriminator < 1 || arity < discriminator)
+            {
+                throw new ArgumentException("The discriminator must be from interval [1, arity].");
+            }
+
+            Arity = arity;
+            Discriminator = discriminator;
+            CoproductValue = value;
+        }
+
+
+        public byte Arity { get; }
+        public byte Discriminator { get; }
+        public object CoproductValue { get; }
+        public override int GetHashCode() =>  new object[] { Arity, Discriminator, CoproductValue }.Hash();
+        public override bool Equals(object that) => that is DUnion c2 &&  c2 != null && GetType() == c2.GetType() && Arity == c2.Arity &&  Discriminator == c2.Discriminator && Equals(CoproductValue, c2.CoproductValue);
+        public override string ToString() => $"{GetType().SimpleName()}[{Discriminator}]({CoproductValue?.ToString()})";
+		protected T GetCoproductValue<T>()
+        {
+            if (CoproductValue is T t)
+            {
+                return t;
+            }
+            return default;
+        }
+    }
+<# for (var i = 2; i < MaxArity(); i++) { #>
+    public class <#= CoproductType(i) #> : DUnion
+    {
+<#    if (i > 0) { #>
+<#    for (var j = 1; j <= i; j++) { #>
+
+        protected DUnion<#= i #>(<#= Type(j) #> <#= GetOrdinal(j).ToLowerInvariant() #>Value)
+            : this(<#= j #>, <#= GetOrdinal(j).ToLowerInvariant() #>Value)
+        {
+        }
+
+<#    } #>
+
+        protected DUnion<#= i #>(<#= CoproductType(i) #> source)
+            : this(source.Discriminator, source.CoproductValue)
+        {
+        }
+
+        private DUnion<#= i #>(byte discriminator, object value)
+            : base(<#= i #>, discriminator, value)
+        {
+        }
+
+<#    for (var j = 1; j <= i; j++) { #>
+        public bool Is<#= GetOrdinal(j) #> => Discriminator == <#= j #>; 
+<#    } #>
+
+<#    for (var j = 1; j <= i; j++) { #>
+        public <#= Type(j) #> <#= GetOrdinal(j) #> => Is<#= GetOrdinal(j) #> ? GetCoproductValue<<#= Type(j) #>>() : default; 
+<#    } #>
+
+        public R Match<R>(
+<#= Lines(i, x => Indent(12) + "Func<T" + x + ", R> " + IfIth(x), separator: ",") #>)
+        {
+            switch (Discriminator)
+            {
+<#= Lines(i, x => Indent(16) + "case " + x + ": return " + IfIth(x) + "(" + GetOrdinal(x) + ");") #>
+                default: return default;
+            }
+        }
+
+        public void Match(
+<#= Lines(i, x => Indent(12) + "Action<T" + x + "> " + IfIth(x) + " = null", separator: ",") #>)
+        {
+            switch (Discriminator)
+            {
+<#= Lines(i, x => Indent(16) + "case " + x + ": " + IfIth(x) + "?.Invoke(" +  GetOrdinal(x)  + "); break;") #>
+            }
+        }
+<#    } else { #>
+        protected DiscriminatedUnion0()
+            : base(0, 0, null)
+        {
+        }
+<#    } #>
+    }
+
+<# } #>
+}
+
+
+<#+
+    public int MaxArity()
+    {
+        return 10;
+    }
+
+    public string GetOrdinal(int i)
+    {
+        var ordinals = new[]
+        {
+            "Zeroth",
+            "First",
+            "Second",
+            "Third",
+            "Fourth",
+            "Fifth",
+            "Sixth",
+            "Seventh",
+            "Eighth",
+            "Ninth",
+            "Tenth",
+            "Eleventh",
+            "Twelfth",
+            "Thirteenth",
+            "Fourteenth",
+            "Fifteenth",
+            "Sixteenth",
+            "Seventeenth",
+            "Eighteenth",
+            "Nineteenth",
+            "Twentieth",
+        };
+
+        if (i < ordinals.Count())
+        {
+            return ordinals[i];
+        }
+        return "???";
+    }
+
+    public string GetLowerOrdinal(int i)
+    {
+        return GetOrdinal(i).ToLowerInvariant();
+    }
+
+    public string Type(int i, string name = "T")
+    {
+        return name + i;
+    }
+
+    public string Types(int i, string name = "T", int? except = null, bool appendSeparator = false)
+    {
+        return List(i, x => Type(x, name), except: except, appendSeparator: appendSeparator);
+    }
+
+    public string TypeBracket(int i, string name = "T", int? except = null)
+    {
+        if (i == 0 || except.HasValue && i == 1)
+        {
+            return "";
+        }
+        return "<" + Types(i, name: name, except: except) + ">";
+    }
+
+    public string NaryType(string typeName, int n, string name, int? except = null)
+    {
+        var arity = n - (except.HasValue ? 1 : 0);
+        return typeName + arity + TypeBracket(n, name: name, except: except);
+    }
+
+    public string ProductType(int i, string name = "T", int? except = null)
+    {
+        return NaryType("Product", i, name, except);
+    }
+
+    public string CoproductType(int i, string name = "T")
+    {
+        return NaryType("DUnion", i, name);
+    }
+    
+    public string DataCubeType(int i, int? except = null, string positionType = "P", string valueType = "TValue")
+    {
+        return "DataCube" + (i - (except.HasValue ? 1 : 0)) + "<" + Types(i, name: positionType, except: except, appendSeparator: true) + valueType + ">";
+    }
+
+    public string PositionType(int i, string name = "P", int? except = null)
+    {
+        return NaryType("Position", i, name, except);
+    }
+
+    public string FuncTypes(int i, string resultTypeName = "TResult", string name = "T", int? except = null)
+    {
+        return Types(i, name, except, appendSeparator: true) + resultTypeName;
+    }
+
+    public string FuncType(int i, string resultTypeName = "TResult", string name = "T", int? except = null)
+    {
+        return "Func<" + FuncTypes(i, resultTypeName, name, except) + ">";
+    }
+
+    public string Value(int i, string name = "T")
+    {
+        return Type(i, name: name).ToLowerInvariant();
+    }
+
+    public string Values(int i, string name = "T", int? except = null) 
+    {
+        return Types(i, name: name).ToLowerInvariant();
+    }
+
+    public string Parameter(int i, string name = "T")
+    {
+        return Type(i, name: name) + " " + Value(i, name: name);
+    }
+
+    public string Parameters(int i, string name = "T", int? except = null, bool appendSeparator = false)
+    {
+        return List(i, x => Parameter(x, name: name), appendSeparator: appendSeparator);
+    }
+
+    public string Property(int i, string name = "Value", string accessor = "")
+    {
+        return accessor + name + i;
+    }
+
+    public string ProductProperty(int i, string accessor = "")
+    {
+        return Property(i, "ProductValue", accessor);
+    }
+
+    public string Properties(int i, string name = "Value", string accessor = "", int? except = null, bool appendSeparator = false) 
+    {
+        return List(i, x => Property(x, name, accessor), except, appendSeparator: appendSeparator);
+    }
+
+    public string Indent(int i)
+    {
+        return new String(' ', i);
+    }
+
+    public string List(int i, Func<int, string> itemGenerator, int? except = null, string separator = ", ", bool appendSeparator = false)
+    {
+        var numbers = Enumerable.Range(1, Math.Max(0, i));
+        if (except.HasValue)
+        {
+            numbers = numbers.Except(new[] { except.Value });
+        }
+        var result = String.Join(separator, numbers.Select(itemGenerator));
+        if (appendSeparator && !String.IsNullOrEmpty(result))
+        {
+            result += separator;
+        }
+        return result;
+    }
+
+    public string Lines(int i, Func<int, string> itemGenerator, int? except = null, string separator = "", bool appendSeparator = false)
+    {
+        return List(i, itemGenerator, except, separator + Environment.NewLine, appendSeparator);
+    }
+
+    public string IfIth(int i)
+    {
+        return "if" + GetOrdinal(i);
+    }
+#>

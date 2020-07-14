@@ -177,6 +177,7 @@ namespace CoMonad
 
         //? RevertError
         //# Result<T1> ==> RezErrBase ==> Func<T1> ==> Result<T1>
+        //# (Result<T1>, RezErrBase, Func<T1>) ==> Result<T1>
         public static Result<T1> RevertError<T1>(in this Result<T1> t1, RezErrBase failure, Func<T1> fix)
                 => (t1.Error?.Equals(failure) == true) ? fix.TryResult() : t1;
         //# Result<T1> ==> RezErrBase ==>  Func<Result<T1>> ==> Result<T1>

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace CoMonadTest.Examples_of_Interest
+namespace CoMonadTest
 {
     [TestClass]
     public class Contact_Modelling_Scott_Wlashin

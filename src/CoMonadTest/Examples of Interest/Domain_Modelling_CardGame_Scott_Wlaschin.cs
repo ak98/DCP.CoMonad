@@ -35,7 +35,10 @@ namespace CoMonadTest
             //? 8 LINES Of actual CODE and a couple of filled in helper methods and we are have a rudimentary running design!
             // For fun 
             // Helper methods are to get it actually running
-            //If you got here u must realise that a couple of helper methods and variables with appropriate names can transmit the idea of the domain - and it runs!
+
+            //If you got here u must realise that a couple of helper methods / variables with appropriate
+            //     names can transmit the idea of the domain - and it runs!
+
             // These could be left as throw  in body but I thought more fun to complete the task
 
             ShowHand(player);
@@ -46,7 +49,6 @@ namespace CoMonadTest
             var dropped = player.hand.Min();
             Debug.WriteLine($"SWAP OUT LOWEST CARD :  {dropped}");
             player.hand = player.hand.Remove(dropped);
-
             shuffledDeck = shuffledDeck.Pop(out Card c);
             player.hand = player.hand.Add(c);
             ShowHand(player);

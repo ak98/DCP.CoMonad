@@ -12,6 +12,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{E9CC6D
 		readme.md = readme.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{735D7B6D-A46E-42CC-AD18-01A60FF9BC3C}"
+	ProjectSection(SolutionItems) = preProject
+		images\bind.PNG = images\bind.PNG
+		images\functormapscala.PNG = images\functormapscala.PNG
+		images\map.png = images\map.png
+		images\monadscala.PNG = images\monadscala.PNG
+		images\monoid.PNG = images\monoid.PNG
+		images\monoidscala.PNG = images\monoidscala.PNG
+		images\tee.PNG = images\tee.PNG
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +40,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{735D7B6D-A46E-42CC-AD18-01A60FF9BC3C} = {E9CC6D1A-205D-4DFD-A273-AF31CB8B3742}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BBBB3C33-67A0-4C23-9539-9CFBA9E75DD0}

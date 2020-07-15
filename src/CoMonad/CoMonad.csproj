@@ -6,7 +6,8 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Description>Combinatorial Monads</Description>
+		<Description>Combinatorial Monads. Inspired by Scott Wlaschin and and railway oriented program design principles, with the requirement to eradicate exceptions from code paths we focus on using functional mechanisms.
+The latest features of C sharp enable us to adopt new paradigms based on functional monadic design.</Description>
 		<PackageIcon>comonadlogo256.png</PackageIcon>
 		<Authors>DCP</Authors>
 		<Company>DCP</Company>
@@ -16,9 +17,9 @@
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>RogueTraderLLC.snk</AssemblyOriginatorKeyFile>
 		<DelaySign>false</DelaySign>
-		<AssemblyVersion>1.0.2.1</AssemblyVersion>
-		<FileVersion>1.0.2.1</FileVersion>
-		<Version>1.0.2</Version>
+		<AssemblyVersion>1.0.3.1</AssemblyVersion>
+		<FileVersion>1.0.3.1</FileVersion>
+		<Version>1.0.3</Version>
 		<RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
 		<PackageProjectUrl>https://github.com/ak98/DCP.CoMonad</PackageProjectUrl>
 	</PropertyGroup>

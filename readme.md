@@ -120,3 +120,7 @@ A Monad is 'a box of something'.
 
 
 
+# ![Monoid](images/monoid.PNG) Monadic Theory 
+
+
+

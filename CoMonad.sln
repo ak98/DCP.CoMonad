@@ -9,18 +9,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoMonadTest", "src\CoMonadT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{E9CC6D1A-205D-4DFD-A273-AF31CB8B3742}"
 	ProjectSection(SolutionItems) = preProject
+		monads.md = monads.md
 		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{735D7B6D-A46E-42CC-AD18-01A60FF9BC3C}"
 	ProjectSection(SolutionItems) = preProject
-		images\bind.PNG = images\bind.PNG
-		images\functormapscala.PNG = images\functormapscala.PNG
+		images\bind.png = images\bind.png
+		images\functormapscala.png = images\functormapscala.png
 		images\map.png = images\map.png
-		images\monadscala.PNG = images\monadscala.PNG
-		images\monoid.PNG = images\monoid.PNG
-		images\monoidscala.PNG = images\monoidscala.PNG
-		images\tee.PNG = images\tee.PNG
+		images\monadscala.png = images\monadscala.png
+		images\monoid.png = images\monoid.png
+		images\monoidscala.png = images\monoidscala.png
+		images\tee.png = images\tee.png
 	EndProjectSection
 EndProject
 Global

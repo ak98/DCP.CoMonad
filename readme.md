@@ -1,12 +1,10 @@
 ﻿# DCP.CoMonad
 ![lang-ext](https://github.com/ak98/DCP.CoMonad/blob/master/comonadlogo256.png?raw=true)
 
-Minimal C# Functional Extensions for the 'Happy Path' 
+C# Functional Extensions for the 'Happy Path' 
 =============================================
 
 Combinatorial Monads for Result, Task, Linq and IAsyncEnumerable. Inspired by Scott Wlaschin and railway oriented program design principles. Uses latest features of C# to adopt new paradigms based on functional monadic design. Retains minimalist design. Easy learning and migration curve.
-
-
 
 ## Index
 
@@ -15,9 +13,12 @@ Combinatorial Monads for Result, Task, Linq and IAsyncEnumerable. Inspired by Sc
 * [No Exception](#no-exceptions)
 * [No Option](#no-option)
 * [No Complexity](#no-complexity)
-
+* [Failure!](#failure)
+* [Worlds Collide](#worlds-collide)
 * [Monads](#monads)
 * [Reference Videos by others](#reference-videos-by-others)
+
+
 ## Functional
 
 __What is functional programming anyway?__
@@ -119,12 +120,44 @@ This library only requires you to master a simple paradigm.
 
 ![Tee](images/tee.png)
 
+## Failure
+
+How to indicate failure pathway? There are many other 'functional' libraries with their own methodologies and no standardized way.
+
+This library uses a simple construct that can encapsulate a string and / or an exception. 
+
+You can create your own class for Error handling easily - just derive from the abstract RezErrorBase class.
+
+## Worlds Collide
+
+Handling transitions from values to Result
+
+```C#
+    var r = Result.Ok("Hello World");
+```
+
+Handling transitions from sync to async
+
+```C#
+    public async Task<Result<string>> GetWebPage(Uri) {.......}
+    public Result<Uri> GetUri(string url) { ......}
+     public Result<int> ProcessPage(string content) { ......}
+    //within an async method
+    var r = GetUri(uri)//in the world of Result now
+                .BindAsync(GetWebPage) //in the world of async Result now
+                .BindAsync(ProcessPage);//remain in the async Result world
+    //Question what is r
+    //Answer : Task<Result<string>>
+    //no async code has executed - page not retrieved and not processed - C# has become Lazy
+    var finalresult = await r;
+```
+
 
 ## Monads all the way ##
 
 ![Monad](images/monoid.png)
 
-[Read the basics](monad.md)
+[Read the basics](https://github.com/ak98/DCP.CoMonad/blob/master/monads.md)
 
 
 

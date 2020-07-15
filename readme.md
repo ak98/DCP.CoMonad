@@ -155,6 +155,34 @@ Handling transitions from sync to async
 ```
 
 
+__Complex Azure Function example from production code__
+
+```C#
+// Demonstrates a chain of predictable code that does not stray from functional principles and is predictable, easy to read and easy to reason about
+// No complex decision branching - just one path
+
+    public static class Retriever {
+        [FunctionName("Retrieve")]
+        public static async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Retrieve/{cid}/{itemid}")] HttpRequest req
+            , string cid
+            , string itemid
+           , ILogger log) {
+            log = new LoggerWrap(log);
+
+            var rez = await req
+                    .FailBadRequest(string.IsNullOrEmpty(itemid) || string.IsNullOrEmpty(cid))
+                    .Bind(r => r.VerifyRSAHandshakeResult())
+                    .Bind(_ => CosmosDB.GetStreamService(cid))
+                    .MapAsync(c=> c.ReadItemStreamAsync(itemid))
+                     .BindAsync(crm => crm.ToRsaStreamResult());
+
+            return rez.Terminate(log);
+
+        }
+
+```
+
 ## Monads all the way ##
 
 ![Monad](images/monoid.png)

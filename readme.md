@@ -8,7 +8,7 @@ Minimal C# Functional Extensions for the 'Happy Path'
 
 * [Functional](#functional)
 * [Introduction](#introduction)
-
+* [Monads](#monads)
 
 ## Functional
 
@@ -29,6 +29,8 @@ __What is functional programming anyway?__
     .Net and indeed most languages possess this ability. Func&lt;T..n&gt; and delegates represent this ability in .Net
     
 The important thing to note is that .Net (C# in particular) is fully capable of functional programming style and technique.
+
+
 
 
 ## Introduction
@@ -75,10 +77,46 @@ This library contains no option or maybe. This is a design decision to transitio
 
 Nullable reference types in effect make the option or maybe types irrelevant. Of course this requires implementing nullable reference types correctly
 
+## Monads ##
+
+A Monad is 'a box of something'. 
 
 
 
 
+
+
+# ROP Development ideas
+
+## Railway oriented programming
+
+[Functional Design Patterns - Scott Wlaschin](https://www.youtube.com/watch?v=srQt1NAHYC0&t=2705s) The original.
+
+
+[Railway-Oriented Programming in C# - Marcus Denny](https://www.youtube.com/watch?v=uM906cqdFWE)
+
+[The Power of Composition - Scott Wlaschin](https://www.youtube.com/watch?v=vDe-4o8Uwl8&t=2980s)
+
+[Vladimir Khomrikov on Pluralsight](https://app.pluralsight.com/library/courses/csharp-applying-functional-principles/table-of-contents)
+
+
+### Map
+
+**Select in C#**
+
+![Map](images/map.png)
+
+### Bind
+
+**SelectMany in C#**
+
+![Bind](images/bind.png)
+
+### Tee
+
+**Action and return in C#**
+
+![Tee](images/tee.png)
 
 
 

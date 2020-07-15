@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoMonad", "src\CoMonad\CoMonad.csproj", "{90C0F91D-114A-4003-80FA-5E05DA77D56A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoMonadTest", "src\CoMonadTest\CoMonadTest.csproj", "{A2DB6D32-C2C4-44AB-B17D-4D56F1A13630}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoMonadTest", "src\CoMonadTest\CoMonadTest.csproj", "{A2DB6D32-C2C4-44AB-B17D-4D56F1A13630}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{E9CC6D1A-205D-4DFD-A273-AF31CB8B3742}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

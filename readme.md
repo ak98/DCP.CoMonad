@@ -81,7 +81,7 @@ Nullable reference types in effect make the option or maybe types irrelevant. Of
 
 A Monad is 'a box of something'. 
 
-
+[monad](monad.md)
 
 
 
@@ -118,9 +118,6 @@ A Monad is 'a box of something'.
 
 ![Tee](images/tee.png)
 
-
-
-# ![Monoid](images/monoid.PNG) Monadic Theory 
 
 
 

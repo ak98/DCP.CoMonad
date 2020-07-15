@@ -11,7 +11,7 @@ namespace CoMonad
     public static class ResultExtensions
     {
         //? Map 4
-        //# Result<T1> ==> Func<T1, Result<T2>> ==> Result<T2>
+        //# Result<T1> ==> Func<T1, T2> ==> Result<T2>
         public static Result<T2> Map<T1, T2>(in this Result<T1> rt1, Func<T1, T2> func)
             => rt1.Error ?? func.TryResult(rt1.Value);
 
@@ -157,7 +157,7 @@ namespace CoMonad
                 return completedtask.Result.Tee(action);
             });
         }
-
+        //? TeeError
         //# Result<T1> ==> Action<RezErrBase> ==> Result<T1>
         public static Result<T1> TeeError<T1>(in this Result<T1> t1, Action<RezErrBase> action)
         {

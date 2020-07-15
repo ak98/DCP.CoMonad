@@ -1,5 +1,9 @@
 ﻿# From Set theory and lamda calculus
 
+
+![Monad](images/monoid.png)
+
+
 ## Sets [😎]
 
 Set of a data type 😎 eg Natural Numbers 'N'
@@ -71,7 +75,6 @@ And has Identity element👹. 😎❄👹==😎.
 }
  
 
-![Monadscala](images/monoidscala.PNG)
 
 
 

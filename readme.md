@@ -4,12 +4,20 @@
 Minimal C# Functional Extensions for the 'Happy Path' 
 =============================================
 
+Combinatorial Monads for Result, Task, Linq and IAsyncEnumerable. Inspired by Scott Wlaschin and railway oriented program design principles. Uses latest features of C# to adopt new paradigms based on functional monadic design. Retains minimalist design. Easy learning and migration curve.
+
+
+
 ## Index
 
 * [Functional](#functional)
 * [Introduction](#introduction)
-* [Monads](#monads)
+* [No Exception](#no-exceptions)
+* [No Option](#no-option)
+* [No Complexity](#no-complexity)
 
+* [Monads](#monads)
+* [Reference Videos by others](#reference-videos-by-others)
 ## Functional
 
 __What is functional programming anyway?__
@@ -24,26 +32,31 @@ __What is functional programming anyway?__
 
 2. First Class Functions and Higher-order functions
 
-    An __ability__ to pass and recieve functions as parameters.
+    An __ability__ to pass and receive functions as parameters.
     
     .Net and indeed most languages possess this ability. Func&lt;T..n&gt; and delegates represent this ability in .Net
     
 The important thing to note is that .Net (C# in particular) is fully capable of functional programming style and technique.
 
 
+## Introduction ##
+
+Functional programming style primary benefit is enhancing code readability and ability to reason about.
+
+The composition throughout our programs is really important. We need to be confident that each piece of code and the composition of code is correct.
+
+Having one small piece of code that is easy to read and reason about is very easy to achieve in practically any dynamic. 
+
+Dealing with large code bases maintained by multiple developers is intrinsically more difficult.
+
+Functional style shines 😊 in this regard.
 
 
-## Introduction
+## No Exceptions ##
 
-Inspired by Scott Wlaschin and and railway oriented program design principles, with the requirement to eradicate exceptions from code paths we focus on using functional mechanisms.
+Using the Result&lt;T&gt; struct type. This type represents a discriminated union of either success or error and allows us to adopt railway oriented programming. Chain function calls and reduce code paths to a single railway track. 
 
-The latest features of C sharp enable us to adopt new paradigms based on functional monadic design.
-
-__Eradicate Exceptions__
-
-Using the Result&lt;T&gt; class to represent the discriminated union of either result or error allows us to adopt railway oriented programming, chaining function calls and reducing code paths to a single railway track. 
-
-Result&lt;T&gt; implements Map, Bind, MapAsync, BindAsync
+Result&lt;T&gt; implements Map, Bind, Combine and their async counter-parts
 
 With these few methods we can transform code to more functional happy paths.
 
@@ -59,36 +72,62 @@ eg Checked Math simple example
 
 The key thing to recognise is that this code will not throw errors yet will performed checked maths.
 
-Indeed the primary requirement is that all methods that return Result&lt;T&gt; will not throw errors.
+Indeed the primary requirement for this design style is that ___'All methods returning Result&lt;T&gt; do not throw errors'___.
 
 Once this requirement is in place we can remove all error handling of exceptions when calling these methods and simply handle the end case result no matter how long the function call chain.
-
-__New World__
 
 Transitioning to returning Result&lt;T&gt; from functions is simple to implement and peppers your code with ability to chain function calls using the map and bind.
 
 Once using this mechanism with chained function calls your ability to reason about code and follow the code path is enhanced.
 
-Scott Wlaschin describes this as moving into a new parallel world which is a nice concept.
+Scott Wlaschin describes this as moving 'up' into a new parallel world which is a nice concept.
 
-__What! No Option or Maybe__
 
-This library contains no option or maybe. This is a design decision to transition to use of nullable reference types.
+## No Option ##
+
+What! No Option or Maybe.
+
+This library contains no option or maybe. This is a design decision to enforce transition to use of nullable reference types.
 
 Nullable reference types in effect make the option or maybe types irrelevant. Of course this requires implementing nullable reference types correctly
 
-## Monads ##
+## No Complexity
 
-A Monad is 'a box of something'. 
+Well... Not Really.
 
-[monad](monad.md)
+This library only requires you to master a simple paradigm.
+
+* Return Result&lt;T&gt; type from your functions. 
+
+* Enforce the rule - 'no exceptions' thrown from these methods.
+
+* Use Map, Bind, Combine, Tee and their async counter-parts to combine your function calls in call chains.
+
+
+### Map
+
+![Map](images/map.png)
+
+### Bind
+
+ ![Bind](images/bind.png)
+
+### Tee
+
+**Action and return in C#**
+
+![Tee](images/tee.png)
+
+
+## Monads all the way ##
+
+![Monad](images/monoid.png)
+
+[Read the basics](monad.md)
 
 
 
-
-# ROP Development ideas
-
-## Railway oriented programming
+## Reference Videos by others
 
 [Functional Design Patterns - Scott Wlaschin](https://www.youtube.com/watch?v=srQt1NAHYC0&t=2705s) The original.
 
@@ -100,23 +139,6 @@ A Monad is 'a box of something'.
 [Vladimir Khomrikov on Pluralsight](https://app.pluralsight.com/library/courses/csharp-applying-functional-principles/table-of-contents)
 
 
-### Map
-
-**Select in C#**
-
-![Map](images/map.png)
-
-### Bind
-
-**SelectMany in C#**
-
-![Bind](images/bind.png)
-
-### Tee
-
-**Action and return in C#**
-
-![Tee](images/tee.png)
 
 
 

@@ -128,6 +128,8 @@ This library uses a simple construct that can encapsulate a string and / or an e
 
 You can create your own class for Error handling easily - just derive from the abstract RezErrorBase class.
 
+To return an error, simply return RezErrBase eg RezErr.OverThrow which is implicitly converted to the appropriate Result&lt;T&gt;
+
 ## Worlds Collide
 
 Handling transitions from values to Result

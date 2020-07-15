@@ -198,11 +198,10 @@ __IAsyncEnumerable__
 
             static async Task<Result<CardIdInfo>> Convert(CampaignCard card)//local static async function
             {
-                string id = card.id;
                 return await RestV2
                     .Restutil
                     .PostAsync<CardInfo>(CardFunctionUrls.CardInfoFunction(), card.CardJson)
-                    .MapAsync(ci => new CardIdInfo(id, ci));
+                    .MapAsync(ci => new CardIdInfo(card.id, ci));
 
             }
         }

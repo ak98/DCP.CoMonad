@@ -5,32 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
-//.NET Framework 2.0   --> NET20
-//.NET Framework 3.5   --> NET35
-//.NET Framework 4.0   --> NET40
-//.NET Framework 4.5   --> NET45
-//.NET Framework 4.5.1 --> NET451
-//.NET Framework 4.5.2 --> NET452
-//.NET Framework 4.6   --> NET46
-//.NET Framework 4.6.1 --> NET461
-//.NET Framework 4.6.2 --> NET462
-//.NET Framework 4.7   --> NET47
-//.NET Framework 4.7.1 --> NET471
-//.NET Framework 4.7.2 --> NET472
 
-//.NET Standard 1.0    --> NETSTANDARD1_0
-//.NET Standard 1.1    --> NETSTANDARD1_1
-//.NET Standard 1.2    --> NETSTANDARD1_2
-//.NET Standard 1.3    --> NETSTANDARD1_3
-//.NET Standard 1.4    --> NETSTANDARD1_4
-//.NET Standard 1.5    --> NETSTANDARD1_5
-//.NET Standard 1.6    --> NETSTANDARD1_6
-//.NET Standard 2.0    --> NETSTANDARD2_0
-
-//.Net Core 1.0        --> NETCOREAPP1_0
-//.Net Core 1.1        --> NETCOREAPP1_1
-//.Net Core 2.0        --> NETCOREAPP2_0
-//.Net Core 2.1        --> NETCOREAPP2_1
 namespace CoMonad
 {
     [DebuggerStepThrough]
@@ -93,3 +68,29 @@ namespace CoMonad
 
     }
 }
+//.NET Framework 2.0   --> NET20
+//.NET Framework 3.5   --> NET35
+//.NET Framework 4.0   --> NET40
+//.NET Framework 4.5   --> NET45
+//.NET Framework 4.5.1 --> NET451
+//.NET Framework 4.5.2 --> NET452
+//.NET Framework 4.6   --> NET46
+//.NET Framework 4.6.1 --> NET461
+//.NET Framework 4.6.2 --> NET462
+//.NET Framework 4.7   --> NET47
+//.NET Framework 4.7.1 --> NET471
+//.NET Framework 4.7.2 --> NET472
+
+//.NET Standard 1.0    --> NETSTANDARD1_0
+//.NET Standard 1.1    --> NETSTANDARD1_1
+//.NET Standard 1.2    --> NETSTANDARD1_2
+//.NET Standard 1.3    --> NETSTANDARD1_3
+//.NET Standard 1.4    --> NETSTANDARD1_4
+//.NET Standard 1.5    --> NETSTANDARD1_5
+//.NET Standard 1.6    --> NETSTANDARD1_6
+//.NET Standard 2.0    --> NETSTANDARD2_0
+
+//.Net Core 1.0        --> NETCOREAPP1_0
+//.Net Core 1.1        --> NETCOREAPP1_1
+//.Net Core 2.0        --> NETCOREAPP2_0
+//.Net Core 2.1        --> NETCOREAPP2_1

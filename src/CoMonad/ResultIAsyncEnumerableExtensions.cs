@@ -47,7 +47,7 @@ namespace CoMonad
             return selector(rt1.Value);
         }
         //# Task<Result<T1>> ==>  Func<T1, IAsyncEnumerable<Result<T2>>> ==> IAsyncEnumerable<Result<T2>>
-        public static IAsyncEnumerable<Result<T2>> BindIAsync<T1, T2>(this Task<Result<T1>> result, Func<T1, IAsyncEnumerable<Result<T2>>> selector)
+        public static IAsyncEnumerable<Result<T2>> BindAsync<T1, T2>(this Task<Result<T1>> result, Func<T1, IAsyncEnumerable<Result<T2>>> selector)
             => result.TaskResultAsync<T1, T2>(rt1 => rt1.BindIAsync(selector)).GetAwaiter().GetResult();
         //# IAsyncEnumerable<Result<T1>> =>  Func<T1, T2> => IAsyncEnumerable<Result<T2>>
         public static IAsyncEnumerable<Result<T2>> Map<T1, T2>(this IAsyncEnumerable<Result<T1>> rt1s, Func<T1, T2> select) 
@@ -61,21 +61,13 @@ namespace CoMonad
             => rt1s.Select(rt1 => (rt1.MapAsync(select)).GetAwaiter().GetResult());
 
         //#   IAsyncEnumerable<Result<T1>> =>  Func<T1, IAsyncEnumerable<Result<T2>>> => IAsyncEnumerable<Result<T2>>
-        public static IAsyncEnumerable<Result<T2>> BindManyIAsync<T1, T2>(this IAsyncEnumerable<Result<T1>> rt1s, Func<T1, IAsyncEnumerable<Result<T2>>> selectMany)
+        public static IAsyncEnumerable<Result<T2>> BindAsync<T1, T2>(this IAsyncEnumerable<Result<T1>> rt1s, Func<T1, IAsyncEnumerable<Result<T2>>> selectMany)
             => rt1s.SelectMany(rt1 => rt1.BindIAsync(selectMany));
-        ////--------------------- MapIAsync HAS THREE POSSIBLE COMBINATORIALS that make sense as building blocks-----------------------------------
 
-        //        [Obsolete(" error handling is undefined")]
-        //        public static IAsyncEnumerable<Result<T2>> MapManyIAsync<T1, T2>(this IAsyncEnumerable<Result<T1>> rt1s, Func<T1, IAsyncEnumerable<T2>> selectMany)
-        //        {
-        //#pragma warning disable CS0618 // Type or member is obsolete
-        //            return rt1s.SelectMany(rt1 => rt1.MapIAsync(selectMany));
-        //#pragma warning restore CS0618 // Type or member is obsolete
-        //        }
 
         //#   IAsyncEnumerable<Result<T1>> =>  Func<T1, ValueTask<Result<T2>>> => IAsyncEnumerable<Result<T2>>
-        public static IAsyncEnumerable<Result<T2>> BindIAsync<T1, T2>(this IAsyncEnumerable<Result<T1>> rt1s, Func<T1, ValueTask<Result<T2>>> selectAsync) 
-            => BindIAsync(rt1s, t1 => selectAsync(t1).AsTask());
+        public static IAsyncEnumerable<Result<T2>> BindAsync<T1, T2>(this IAsyncEnumerable<Result<T1>> rt1s, Func<T1, ValueTask<Result<T2>>> selectAsync) 
+            => BindAsync(rt1s, t1 => selectAsync(t1).AsTask());
         //# ValueTask<Result<T1>> ==> Func<Result<T1>, IAsyncEnumerable<Result<T2>>> ==> ValueTask<IAsyncEnumerable<Result<T2>>>
         public static ValueTask<IAsyncEnumerable<Result<T2>>> TaskResultAsync<T1, T2>(this ValueTask<Result<T1>> result, Func<Result<T1>, IAsyncEnumerable<Result<T2>>> selector)
         {
@@ -85,10 +77,10 @@ namespace CoMonad
         }
 #if !NET45
         //#   IAsyncEnumerable<Result<T1>> =>  Func<T1, Task<Result<T2>> => IAsyncEnumerable<Result<T2>>
-        public static IAsyncEnumerable<Result<T2>> BindIAsync<T1, T2>(this IAsyncEnumerable<Result<T1>> rt1s, Func<T1, Task<Result<T2>>> selectAsync) 
+        public static IAsyncEnumerable<Result<T2>> BindAsync<T1, T2>(this IAsyncEnumerable<Result<T1>> rt1s, Func<T1, Task<Result<T2>>> selectAsync) 
             => rt1s.Select(rt1 => (rt1.BindAsync(selectAsync)).GetAwaiter().GetResult());
 #else
-        public static IAsyncEnumerable<Result<T2>> BindIAsync<T1, T2>(this IAsyncEnumerable<Result<T1>> rt1s, Func<T1, Task<Result<T2>>> converter)
+        public static IAsyncEnumerable<Result<T2>> BindAsync<T1, T2>(this IAsyncEnumerable<Result<T1>> rt1s, Func<T1, Task<Result<T2>>> converter)
         {
             return new AsyncEnumerable<Result<T2>>(async yielder =>
             {

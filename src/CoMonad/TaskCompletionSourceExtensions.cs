@@ -1,11 +1,13 @@
 ﻿using CoMonad;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CoMonad
 {
+    [DebuggerStepThrough]
     public static class TaskCompletionSourceExtensions
     {
         public static bool TrySetFromTask<TResult>(this TaskCompletionSource<TResult> resultSetter, Task task)

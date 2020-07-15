@@ -16,9 +16,9 @@
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Comonad.snk</AssemblyOriginatorKeyFile>
 		<DelaySign>false</DelaySign>
-		<AssemblyVersion>1.0.5.1</AssemblyVersion>
-		<FileVersion>1.0.5.1</FileVersion>
-		<Version>1.0.5</Version>
+		<AssemblyVersion>1.0.7.1</AssemblyVersion>
+		<FileVersion>1.0.7.1</FileVersion>
+		<Version>1.0.7</Version>
 		<RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
 		<PackageProjectUrl>https://github.com/ak98/DCP.CoMonad</PackageProjectUrl>
 	</PropertyGroup>

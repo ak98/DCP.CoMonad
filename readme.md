@@ -39,6 +39,7 @@ __What is functional programming anyway?__
 The important thing to note is that .Net (C# in particular) is fully capable of functional programming style and technique.
 
 
+
 ## Introduction ##
 
 Functional programming style primary benefit is enhancing code readability and ability to reason about.

@@ -15,13 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{E9CC6D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{735D7B6D-A46E-42CC-AD18-01A60FF9BC3C}"
 	ProjectSection(SolutionItems) = preProject
-		images\bind.png = images\bind.png
 		images\functormapscala.png = images\functormapscala.png
 		images\map.png = images\map.png
 		images\monadscala.png = images\monadscala.png
 		images\monoid.png = images\monoid.png
 		images\monoidscala.png = images\monoidscala.png
-		images\tee.png = images\tee.png
 	EndProjectSection
 EndProject
 Global

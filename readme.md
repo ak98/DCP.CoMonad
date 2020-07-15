@@ -4,7 +4,11 @@
 C# Functional Extensions for the 'Happy Path' 
 =============================================
 
-Combinatorial Monads for Result, Task, Linq and IAsyncEnumerable. Inspired by Scott Wlaschin and railway oriented program design principles. Uses latest features of C# to adopt new paradigms based on functional monadic design. Retains minimalist design. Easy learning and migration curve.
+Combinatorial Monads for Result, Task, Linq and IAsyncEnumerable. Inspired by Scott Wlaschin and railway oriented program design principles.
+
+Uses latest features of C# to adopt new paradigms based on functional monadic design. Retains minimalist design. Easy learning and migration curve.
+
+Differs from other functional libraries in succinctness without loss of power.
 
 ## Index
 
@@ -15,7 +19,7 @@ Combinatorial Monads for Result, Task, Linq and IAsyncEnumerable. Inspired by Sc
 * [No Complexity](#no-complexity)
 * [Failure!](#failure)
 * [Worlds Collide](#worlds-collide)
-* [Monads](#monads)
+* [Monads All the Way](#monads-all-the-way)
 * [Reference Videos by others](#reference-videos-by-others)
 
 
@@ -154,11 +158,10 @@ Handling transitions from sync to async
     var finalresult = await r;
 ```
 
-
-__Complex Azure Function example from production code__
+__Complex examples from production code__
 
 ```C#
-// Demonstrates a chain of predictable code that does not stray from functional principles and is predictable, easy to read and easy to reason about
+// Azure Function Demonstrates a chain of predictable code that does not stray from functional principles and is predictable, easy to read and easy to reason about
 // No complex decision branching - just one path
 
     public static class Retriever {
@@ -182,6 +185,31 @@ __Complex Azure Function example from production code__
         }
 
 ```
+__IAsyncEnumerable__
+
+```C#
+      //  IAsyncEnumerable available from DotNet Framework 4.5 with Dasync.Collections
+       private IAsyncEnumerable<Result<CardIdInfo>> GetCardInfos(Campaign campaign)
+        {
+            return campaign
+                 .Query<Campaign.CampaignCard>()
+                 .ListAsync()  //IAsyncEnumerable<CampaignCard>
+                 .BindAsync(Convert);
+
+            static async Task<Result<CardIdInfo>> Convert(CampaignCard card)//local static async function
+            {
+                string id = card.id;
+                return await RestV2
+                    .Restutil
+                    .PostAsync<CardInfo>(CardFunctionUrls.CardInfoFunction(), card.CardJson)
+                    .MapAsync(ci => new CardIdInfo(id, ci));
+
+            }
+        }
+
+
+```
+
 
 ## Monads all the way ##
 

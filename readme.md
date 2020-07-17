@@ -8,6 +8,8 @@ Combinatorial Monads for __Result, Task, ValueTask, Linq and IAsyncEnumerable__.
 
 Inspired by __Scott Wlaschin__ and railway oriented program design principles.
 
+Also includes Discriminated Union (Sum Type) to assist with Domain design.
+
 Uses latest features of C# to adopt new paradigms based on functional monadic design. Retains minimalist design. Easy learning and migration curve.
 
 Differs from other functional libraries in succinctness without loss of power.
@@ -21,6 +23,7 @@ Differs from other functional libraries in succinctness without loss of power.
 * [No Complexity](#no-complexity)
 * [Failure!](#failure)
 * [Worlds Collide](#worlds-collide)
+* [Unionize]{#unionize}
 * [Monads All the Way](#monads-all-the-way)
 * [Reference Videos by others](#reference-videos-by-others)
 
@@ -165,7 +168,7 @@ __Complex examples from production code__
 ```C#
 // Azure Function Demonstrates a chain of predictable code that does not stray from functional principles and is predictable, easy to read and easy to reason about
 // No complex decision branching - just one path
-
+// Intrinsic error Handling
     public static class Retriever {
         [FunctionName("Retrieve")]
         public static async Task<IActionResult> Run(
@@ -211,6 +214,133 @@ __IAsyncEnumerable__
 
 ```
 
+## Unionize
+
+
+Discriminated Unions are explained in Scotts Functional Designs talks on Domain modelling
+
+This library includes a discriminated Union (DUnion) type 
+
+
+
+```C#
+        [TestMethod]
+        public void Payment_Model()  //# Scott Wlaschin Domain modelling https://youtu.be/PLFl95c-IiU?t=1169
+        {
+            Result<Payment> payment = Cash.Create(42)
+                .Map(c => new PaymentMethod(c))
+                .Combine(pm => PaymentAmount.Create(42))
+                .Map(tup => new Payment() { Amount = tup.Item2, Method = tup.Item1, Currency = Currency.USD });
+        }
+        //# Model classes
+        class MasterCard
+        {
+            public CardNumber CardNumber { get; set; }
+        }
+        class Visacard
+        {
+            public CardNumber CardNumber { get; set; }
+        }
+        class Cheque
+        {
+            public CheckNumber CheckNumber { get; set; }
+        }
+        class CreditCardInfo : DUnion2<MasterCard, Visacard>//? Discriminated Union 'Or Type'
+        {
+            public CreditCardInfo(MasterCard mc) : base(mc) { }
+            public CreditCardInfo(Visacard visa) : base(visa) { }
+        }
+        class PaymentMethod : DUnion3<Cash, Cheque, CreditCardInfo>//? Discriminated Union 'Or Type'
+        {
+            public PaymentMethod(CreditCardInfo card) : base(card) { }
+            public PaymentMethod(Cheque cheque) : base(cheque) { }
+            public PaymentMethod(Cash cash) : base(cash) { }
+        }
+        class Payment
+        {
+            public PaymentAmount Amount { get; set; }
+            public Currency Currency { get; set; }
+            public PaymentMethod Method { get; set; }
+        }
+
+
+```
+
+
+
+## Code of interest
+
+Scott does a nice example for a card game design in F#
+
+It is possible to do similar in less lines of code in c#
+This is runnable - hence the extra lines of code - not just a design see [Domain_Modelling_CardGame_Scott_Wlaschin.cs](https://github.com/ak98/DCP.CoMonad/blob/master/src/CoMonadTest/Examples%20of%20Interest/Domain_Modelling_CardGame_Scott_Wlaschin.cs)
+
+```C#
+using Card = System.ValueTuple<Rank, Suit>
+static List<Card> OpenNewDeckOfCards()
+        {
+            var deck = new List<Card>();
+            //Fill Deck
+            for (Suit i = Suit.Heart; i <= Suit.Club; i++)
+            {
+                for (Rank j = Rank.Two; j <= Rank.Ace; j++)
+                {
+                    deck.Add((j,i));
+                }
+            }
+            return deck;
+        }
+        static ImmutableStack<Card> Shuffle(List<Card> deck)
+        {
+            var array = deck.ToArray();
+            Random rng = new Random();
+            int n = array.Length;
+            while (n > 1)
+            {
+                int k = rng.Next(n);
+                n--;
+                Card temp = array[n];
+                array[n] = array[k];
+                array[k] = temp;
+            }
+            var stack = ImmutableStack<Card>.Empty;
+            foreach (var item in array)
+            {
+                stack = stack.Push(item);
+            }
+            return stack;
+        }
+        static void ShowHand((string name, ImmutableList<Card> hand) player)
+        {
+            Debug.WriteLine($"Player '{player.name}' has these cards.");
+            foreach (var item in player.hand.OrderBy(cc => cc.Item1).ThenBy(c2 => c2.Item2))
+            {
+                Debug.WriteLine(item);
+            }
+            foreach (var g in player.hand.GroupBy(crd => crd.Item1).Where(z => z.Count() > 1))
+            {
+
+                Debug.WriteLine($"Player '{player.name}' has {g.Count()} {g.Key}'s. What a WINNER!");
+
+            }
+        }
+
+            List<Card> deck = OpenNewDeckOfCards();//? 3
+            ImmutableStack<Card> shuffledDeck = Shuffle(deck);
+            var player = (name: "Hard Luck", hand: ImmutableList<Card>.Empty);
+            for (int i = 0; i < 5; i++)//? 6
+            {
+                shuffledDeck = shuffledDeck.Pop(out Card card); //deal
+                player.hand = player.hand.Add(card);//pickup
+            }
+            ShowHand(player);
+        
+
+
+
+
+``` 
+
 
 ## Monads all the way ##
 
@@ -228,6 +358,8 @@ __IAsyncEnumerable__
 [Railway-Oriented Programming in C# - Marcus Denny](https://www.youtube.com/watch?v=uM906cqdFWE)
 
 [The Power of Composition - Scott Wlaschin](https://www.youtube.com/watch?v=vDe-4o8Uwl8&t=2980s)
+
+[Scott Wlaschin Domain modelling](https://youtu.be/PLFl95c-IiU?t=716) 
 
 [Vladimir Khomrikov on Pluralsight](https://app.pluralsight.com/library/courses/csharp-applying-functional-principles/table-of-contents)
 

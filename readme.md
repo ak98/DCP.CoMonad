@@ -8,7 +8,7 @@ Combinatorial Monads for __Result, Task, ValueTask, Linq and IAsyncEnumerable__.
 
 Inspired by __Scott Wlaschin__ and railway oriented program design principles.
 
-Also includes Discriminated Union (Sum Type) to assist with Domain design.
+Also includes __Discriminated Union__ (Sum Type) to assist with Domain design.
 
 Uses latest features of C# to adopt new paradigms based on functional monadic design. Retains minimalist design. Easy learning and migration curve.
 
@@ -158,13 +158,17 @@ To return an error, simply return RezErrBase eg RezErr.OverThrow which is implic
 
 Another decision that was made - the Error property is not wrapped with boolean __IsFailure__ etc
 
-This enables compiler optimisations which results in safer code. The compiler cant help you if you obfuscate the Error from the compiler.
+This enables compiler checks which results in safer code. The compiler cant help you if you obfuscate the Error from the compiler.
 
 ```C#
 
     if(r.Error is null)
     {
         ...
+    } 
+    if(r.Error is {})
+    {
+        string err = r.Error.ToString();//Compiler sees Error not null 😀😀
     }
 
 ```

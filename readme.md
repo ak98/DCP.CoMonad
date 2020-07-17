@@ -8,7 +8,7 @@ Combinatorial Monads for __Result, Task, ValueTask, Linq and IAsyncEnumerable__.
 
 Inspired by __Scott Wlaschin__ and railway oriented program design principles.
 
-Also includes __Discriminated Union__ (Sum Type) to assist with Domain design.
+Also includes __Discriminated Union__ (OR Type) to assist with Domain design.
 
 Uses latest features of C# to adopt new paradigms based on functional monadic design. Retains minimalist design. Easy learning and migration curve.
 
@@ -154,17 +154,17 @@ This library uses a simple construct that can encapsulate a string and / or an e
 
 You can create your own class for Error handling easily - just derive from the abstract RezErrorBase class.
 
-To return an error, simply return RezErrBase eg RezErr.OverThrow which is implicitly converted to the appropriate Result&lt;T&gt;
+To return an error, simply return RezErrBase eg RezErr.OverThrow which is __implicitly converted__ to the appropriate __Result&lt;T&gt;__
 
 Another decision that was made - the Error property is not wrapped with boolean __IsFailure__ etc
 
-This enables compiler checks which results in safer code. The compiler cant help you if you obfuscate the Error from the compiler.
+This enables compiler checks which result in safer code. The compiler cant help you if you obfuscate the Error from the compiler.
 
 ```C#
 
     if(r.Error is null)
     {
-        ...
+        ... work on r.Value
     } 
     if(r.Error is {})
     {

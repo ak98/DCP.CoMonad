@@ -4,7 +4,9 @@
 C# Functional Extensions for the 'Happy Path' 
 =============================================
 
-Combinatorial Monads for Result, Task, Linq and IAsyncEnumerable. Inspired by Scott Wlaschin and railway oriented program design principles.
+Combinatorial Monads for __Result, Task, ValueTask, Linq and IAsyncEnumerable__. 
+
+Inspired by __Scott Wlaschin__ and railway oriented program design principles.
 
 Uses latest features of C# to adopt new paradigms based on functional monadic design. Retains minimalist design. Easy learning and migration curve.
 

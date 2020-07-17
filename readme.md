@@ -129,6 +129,20 @@ This library only requires you to master a simple paradigm.
 
 ![Tee](images/tee.png)
 
+### Combine
+
+Experience over the last year indicated scenarios where this method to combine results into a tuple to be extremely useful.
+
+Eg when T1 and T2 were parameters to a subsequent chained method call.
+
+This avoids the need for paramaterised variations of Map and Bind.
+
+![Combine](images/combine.png)
+
+
+
+
+
 ## Failure
 
 How to indicate failure pathway? There are many other 'functional' libraries with their own methodologies and no standardized way.

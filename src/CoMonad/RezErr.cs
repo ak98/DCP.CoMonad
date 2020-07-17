@@ -17,6 +17,7 @@ namespace CoMonad
         public static readonly RezErr None = new RezErr("");
         public static readonly RezErr Cancelled = new RezErr("Cancelled");
         public static readonly RezErr EmptyEnumerable = new RezErr("EmptyEnumerable");
-        public static readonly RezErr OverThrow = new RezErr("OverThrow");
+        public static readonly RezErr Overflow = new RezErr("Overflow");
+        public static readonly RezErr DivideByZero = new RezErr("DivideByZero");
     }
 }

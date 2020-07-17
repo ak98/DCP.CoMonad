@@ -47,6 +47,7 @@
 			<LastGenOutput>DUnion.cs</LastGenOutput>
 			<Generator>TextTemplatingFileGenerator</Generator>
 		</None>
+		<None Include="..\..\.editorconfig" Link=".editorconfig" />
 		<None Include="comonadlogo256.png">
 		  <Pack>True</Pack>
 		  <PackagePath></PackagePath>

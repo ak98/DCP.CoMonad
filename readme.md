@@ -74,11 +74,14 @@ With these few methods we can transform code to more functional happy paths.
 eg Checked Math simple example
 
 ```C#
-    Result<int> Divide(int a,int b)=>b==0?RezErr.DivideByZero:Result.Ok(a/b);
+   static Result<int> Divide(int a,int b)=>b==0?RezErr.DivideByZero:Result.Ok(a/b);
     //C# will not overflow unless using checked math
-    Result<int> Add(int a,int b)=>b==try{return Result.Ok(checked(a+b));catch(System.OverflowException){return RezErr.Overflow;}
+    static Result<int> Add(int a, int b)
+    {
+        try { return Result.Ok(checked(a + b)); } catch (System.OverflowException) { return RezErr.Overflow; }
+    }
 
-    Result<int> AddDivide(int a,int b,int c)=> Add(a,b).Bind(r=>Divide(r,c));
+   static Result<int> AddDivide(int a,int b,int c)=> Add(a,b).Bind(r=>Divide(r,c));
 ```
 
 The key thing to recognise is that this code will not throw errors yet will performed checked maths.
@@ -152,6 +155,19 @@ This library uses a simple construct that can encapsulate a string and / or an e
 You can create your own class for Error handling easily - just derive from the abstract RezErrorBase class.
 
 To return an error, simply return RezErrBase eg RezErr.OverThrow which is implicitly converted to the appropriate Result&lt;T&gt;
+
+Another decision that was made - the Error property is not wrapped with boolean __IsFailure__ etc
+
+This enables compiler optimisations which results in safer code. The compiler cant help you if you obfuscate the Error from the compiler.
+
+```C#
+
+    if(r.Error is null)
+    {
+        ...
+    }
+
+```
 
 ## Worlds Collide
 

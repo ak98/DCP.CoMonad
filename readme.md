@@ -175,13 +175,30 @@ This enables compiler checks which result in safer code. The compiler cant help 
 
 ## Worlds Collide
 
-Handling transitions from values to Result
+Transitions from value to Result
 
 ```C#
     var r = Result.Ok("Hello World");
 ```
 
-Handling transitions from sync to async
+Transitions from RezErrorBase to Result
+
+```C#
+    Result<int> r = RezErr.OverFlow; //Implicit conversion to Result<int>
+```
+
+Transitions via Func&lt;T1,T2&gt; to Result&lt;T2&gt;
+
+```C#
+    Result<int> r = Result.Ok(1).Map(i=>i+1);
+```
+Transitions via Func&lt;T1,Result&lt;T2&gt;&gt; to Result&lt;T2&gt;
+
+```C#
+    Result<int> r = Result.Ok(1).Bind(i=>Result.Ok(i+1));
+```
+
+Transition from sync to async
 
 ```C#
     public async Task<Result<string>> GetWebPage(Uri) {.......}

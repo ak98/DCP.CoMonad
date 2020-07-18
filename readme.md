@@ -23,7 +23,7 @@ Differs from other functional libraries in succinctness without loss of power.
 * [No Complexity](#no-complexity)
 * [Failure!](#failure)
 * [Worlds Collide](#worlds-collide)
-* [Unionize]{#unionize}
+* [Unionize](#unionize)
 * [Monads All the Way](#monads-all-the-way)
 * [Reference Videos by others](#reference-videos-by-others)
 

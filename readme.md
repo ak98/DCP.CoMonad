@@ -84,9 +84,9 @@ eg Checked Math simple example
    static Result<int> AddDivide(int a,int b,int c)=> Add(a,b).Bind(r=>Divide(r,c));
 ```
 
-The key thing to recognise is that this code will not throw errors yet will performed checked maths.
+The key thing to recognise is that this code will not throw exceptions yet will performed checked maths.
 
-Indeed the primary requirement for this design style is that ___'All methods returning Result&lt;T&gt; do not throw errors'___.
+Indeed the primary requirement for this design style is that ___'All methods returning Result&lt;T&gt; do not throw exceptions'___.
 
 Once this requirement is in place we can remove all error handling of exceptions when calling these methods and simply handle the end case result no matter how long the function call chain.
 

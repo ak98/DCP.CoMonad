@@ -6,6 +6,8 @@ C# Functional Extensions for the 'Happy Path'
 
 Combinatorial Monads for __Result, Task, ValueTask, Linq and IAsyncEnumerable__. 
 
+The most succinct powerful functional library.
+
 Inspired by __Scott Wlaschin__ and railway oriented program design principles.
 
 Also includes __Discriminated Union__ (OR Type) to assist with Domain design.

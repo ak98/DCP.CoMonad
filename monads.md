@@ -227,14 +227,24 @@ All told, a monad in X is just a monoid in the category of endofunctors of X, wi
 
 
 
-## F# Functional languages have Sum Types with pattern matching 
+## F# Functional languages have Discriminated Unions 'SUM Types' which are useful particularly via pattern matching 
 
-Allows functional languagest to write a function that will work on all functors.
+Allows functional languaes to write a function that will work on all functors within the domain of the type.
 
-eg  Add1 then convert to word on IEnumerable AND IObservable of ints
+Well, let’s say that we want to define a function that works with integers OR booleans, maybe to convert them into strings.
+
+ But we want to be strict and not accept any other type (such as floats or strings). Here’s a diagram of such as function:
+
+function from int union bool
+
+ ![Boolintsume](images/boolintsume.png)
+
+How could we represent the domain of this function?
+
+What we need is a type that represents all possible integers **PLUS** all possible booleans.
 
  
-[Functional Programming Patterns for Mere Mortals - Daniel Chambers](https://www.youtube.com/watch?v=v9QGWbGppis)
+
 
 
       type Option<'a> =
@@ -286,3 +296,5 @@ Scala Days
 [Why the free Monad isn't free](https://www.youtube.com/watch?v=U0lK0hnbc4U&t=2117s)
 
 [Code](http://github.com/robinske/monad-examples)
+
+[Functional Programming Patterns for Mere Mortals - Daniel Chambers](https://www.youtube.com/watch?v=v9QGWbGppis)

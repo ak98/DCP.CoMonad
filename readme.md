@@ -272,7 +272,19 @@ __IAsyncEnumerable__
 
 Discriminated Unions are explained in Scotts Functional Designs talks on Domain modelling
 
-This library includes a discriminated Union (DUnion) type 
+This library includes a discriminated Union (DUnion)  type 
+
+Conceptually, Discriminated Unions are a sum type (include the sum of the set of each type).
+
+Concretely, Discriminated union is evaluated as either of its included types.
+
+Option&lt;int&gt; is a type that includes the set sum of the set of integers and None
+
+DUnion&lt;int,bool&gt; is a type that includes the set sum of the set of integers and the set of strings.
+
+The common way of combining types in C# classes, tuples etc is the perumtative or combination of types.
+
+A Tuple&lt;int,bool&gt; is an example of creating new type by “multiplying” existing types together and its set is the permutative set of all integers and strings.
 
 
 

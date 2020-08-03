@@ -284,7 +284,7 @@ DUnion&lt;int,bool&gt; is a type that includes the set sum of the set of integer
 
 The common way of combining types in C# classes, tuples etc is the perumtative or combination of types.
 
-A Tuple&lt;int,bool&gt; is an example of creating new type by “multiplying” existing types together and its set is the permutative set of all integers and strings.
+A Tuple&lt;int,bool&gt; is an example of creating new type by “multiplying” existing types together and its set is the permutative set of all integers and bools.
 
 
 

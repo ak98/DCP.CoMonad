@@ -16,6 +16,32 @@ Uses latest features of C# to adopt new paradigms based on functional monadic de
 
 Differs from other functional libraries in succinctness without loss of power.
 
+# Requires LangVersion 8.0 in project file 
+DotNet Core .csproj file
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+            ...
+            <LangVersion>8.0</LangVersion>
+    </PropertyGroup>
+    ...
+</Project>
+
+```
+DotNet CLR .csproj file
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+            ...
+            <LangVersion>8.0</LangVersion>
+    </PropertyGroup>
+    ...
+</Project>
+
+```
+
+
 ## Index
 
 * [Functional](#functional)

@@ -4,72 +4,37 @@ using System.Text;
 using System.Reflection;
 namespace CoMonad
 {
-    /// <summary>
-    /// A type that represents a disjunction of types (Discriminated Union), choice from multiple different types e.g. T1 or T2 or T3.
-    /// </summary>
-    public abstract class DUnion
+
+    public struct DUnion<T1, T2> : IDUnion
     {
-        protected DUnion(byte arity, byte discriminator, object value)
-        {
-            if (arity <= 0)
-            {
-                throw new ArgumentException("The arity must be a positive number.");
-            }
-            if (discriminator < 1 || arity < discriminator)
-            {
-                throw new ArgumentException("The discriminator must be from interval [1, arity].");
-            }
-
-            Arity = arity;
-            Discriminator = discriminator;
-            CoproductValue = value;
-        }
-
-
-        public byte Arity { get; }
-        public byte Discriminator { get; }
-        public object CoproductValue { get; }
-        public override int GetHashCode() =>  new object[] { Arity, Discriminator, CoproductValue }.Hash();
-        public override bool Equals(object that) => that is DUnion c2 &&  c2 != null && GetType() == c2.GetType() && Arity == c2.Arity &&  Discriminator == c2.Discriminator && Equals(CoproductValue, c2.CoproductValue);
-        public override string ToString() => $"{GetType().SimpleName()}[{Discriminator}]({CoproductValue?.ToString()})";
-		protected T GetCoproductValue<T>()
-        {
-            if (CoproductValue is T t)
-            {
-                return t;
-            }
-            return default;
-        }
-    }
-    public class DUnion<T1, T2> : DUnion
-    {
-
          public static implicit operator DUnion<T1, T2>(T1 t) => new DUnion<T1, T2>(1, t);
+         public static implicit operator DUnion<T1, T2>(T2 t) => new DUnion<T1, T2>(2, t);
 
-        protected DUnion(T1 firstValue)
+         DUnion(T1 firstValue)
             : this(1, firstValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2>(T2 t) => new DUnion<T1, T2>(2, t);
-
-        protected DUnion(T2 secondValue)
+         DUnion(T2 secondValue)
             : this(2, secondValue)
         {
         }
 
 
-        protected DUnion(DUnion<T1, T2> source)
+         DUnion(DUnion<T1, T2> source)
             : this(source.Discriminator, source.CoproductValue)
         {
         }
 
-        private DUnion(byte discriminator, object value)
-            : base(2, discriminator, value)
-        {
+         DUnion(byte discriminator, object value)
+        {     
+            Discriminator = discriminator;
+            CoproductValue = value;
         }
-
+         T GetCoproductValue<T>() => (CoproductValue is T t) ? t : default;
+         public object CoproductValue { get; }
+        public byte Discriminator { get; }
         public bool IsFirst => Discriminator == 1; 
         public bool IsSecond => Discriminator == 2; 
 
@@ -88,7 +53,7 @@ namespace CoMonad
             }
         }
 
-        public void Match(
+        public void Switch(
             Action<T1> ifFirst = null,
             Action<T2> ifSecond = null)
         {
@@ -100,43 +65,43 @@ namespace CoMonad
         }
     }
 
-    public class DUnion<T1, T2, T3> : DUnion
+    public struct DUnion<T1, T2, T3> : IDUnion
     {
-
          public static implicit operator DUnion<T1, T2, T3>(T1 t) => new DUnion<T1, T2, T3>(1, t);
+         public static implicit operator DUnion<T1, T2, T3>(T2 t) => new DUnion<T1, T2, T3>(2, t);
+         public static implicit operator DUnion<T1, T2, T3>(T3 t) => new DUnion<T1, T2, T3>(3, t);
 
-        protected DUnion(T1 firstValue)
+         DUnion(T1 firstValue)
             : this(1, firstValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3>(T2 t) => new DUnion<T1, T2, T3>(2, t);
-
-        protected DUnion(T2 secondValue)
+         DUnion(T2 secondValue)
             : this(2, secondValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3>(T3 t) => new DUnion<T1, T2, T3>(3, t);
-
-        protected DUnion(T3 thirdValue)
+         DUnion(T3 thirdValue)
             : this(3, thirdValue)
         {
         }
 
 
-        protected DUnion(DUnion<T1, T2, T3> source)
+         DUnion(DUnion<T1, T2, T3> source)
             : this(source.Discriminator, source.CoproductValue)
         {
         }
 
-        private DUnion(byte discriminator, object value)
-            : base(3, discriminator, value)
-        {
+         DUnion(byte discriminator, object value)
+        {     
+            Discriminator = discriminator;
+            CoproductValue = value;
         }
-
+         T GetCoproductValue<T>() => (CoproductValue is T t) ? t : default;
+         public object CoproductValue { get; }
+        public byte Discriminator { get; }
         public bool IsFirst => Discriminator == 1; 
         public bool IsSecond => Discriminator == 2; 
         public bool IsThird => Discriminator == 3; 
@@ -159,7 +124,7 @@ namespace CoMonad
             }
         }
 
-        public void Match(
+        public void Switch(
             Action<T1> ifFirst = null,
             Action<T2> ifSecond = null,
             Action<T3> ifThird = null)
@@ -173,51 +138,50 @@ namespace CoMonad
         }
     }
 
-    public class DUnion<T1, T2, T3, T4> : DUnion
+    public struct DUnion<T1, T2, T3, T4> : IDUnion
     {
-
          public static implicit operator DUnion<T1, T2, T3, T4>(T1 t) => new DUnion<T1, T2, T3, T4>(1, t);
+         public static implicit operator DUnion<T1, T2, T3, T4>(T2 t) => new DUnion<T1, T2, T3, T4>(2, t);
+         public static implicit operator DUnion<T1, T2, T3, T4>(T3 t) => new DUnion<T1, T2, T3, T4>(3, t);
+         public static implicit operator DUnion<T1, T2, T3, T4>(T4 t) => new DUnion<T1, T2, T3, T4>(4, t);
 
-        protected DUnion(T1 firstValue)
+         DUnion(T1 firstValue)
             : this(1, firstValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4>(T2 t) => new DUnion<T1, T2, T3, T4>(2, t);
-
-        protected DUnion(T2 secondValue)
+         DUnion(T2 secondValue)
             : this(2, secondValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4>(T3 t) => new DUnion<T1, T2, T3, T4>(3, t);
-
-        protected DUnion(T3 thirdValue)
+         DUnion(T3 thirdValue)
             : this(3, thirdValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4>(T4 t) => new DUnion<T1, T2, T3, T4>(4, t);
-
-        protected DUnion(T4 fourthValue)
+         DUnion(T4 fourthValue)
             : this(4, fourthValue)
         {
         }
 
 
-        protected DUnion(DUnion<T1, T2, T3, T4> source)
+         DUnion(DUnion<T1, T2, T3, T4> source)
             : this(source.Discriminator, source.CoproductValue)
         {
         }
 
-        private DUnion(byte discriminator, object value)
-            : base(4, discriminator, value)
-        {
+         DUnion(byte discriminator, object value)
+        {     
+            Discriminator = discriminator;
+            CoproductValue = value;
         }
-
+         T GetCoproductValue<T>() => (CoproductValue is T t) ? t : default;
+         public object CoproductValue { get; }
+        public byte Discriminator { get; }
         public bool IsFirst => Discriminator == 1; 
         public bool IsSecond => Discriminator == 2; 
         public bool IsThird => Discriminator == 3; 
@@ -244,7 +208,7 @@ namespace CoMonad
             }
         }
 
-        public void Match(
+        public void Switch(
             Action<T1> ifFirst = null,
             Action<T2> ifSecond = null,
             Action<T3> ifThird = null,
@@ -260,59 +224,57 @@ namespace CoMonad
         }
     }
 
-    public class DUnion<T1, T2, T3, T4, T5> : DUnion
+    public struct DUnion<T1, T2, T3, T4, T5> : IDUnion
     {
-
          public static implicit operator DUnion<T1, T2, T3, T4, T5>(T1 t) => new DUnion<T1, T2, T3, T4, T5>(1, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5>(T2 t) => new DUnion<T1, T2, T3, T4, T5>(2, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5>(T3 t) => new DUnion<T1, T2, T3, T4, T5>(3, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5>(T4 t) => new DUnion<T1, T2, T3, T4, T5>(4, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5>(T5 t) => new DUnion<T1, T2, T3, T4, T5>(5, t);
 
-        protected DUnion(T1 firstValue)
+         DUnion(T1 firstValue)
             : this(1, firstValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5>(T2 t) => new DUnion<T1, T2, T3, T4, T5>(2, t);
-
-        protected DUnion(T2 secondValue)
+         DUnion(T2 secondValue)
             : this(2, secondValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5>(T3 t) => new DUnion<T1, T2, T3, T4, T5>(3, t);
-
-        protected DUnion(T3 thirdValue)
+         DUnion(T3 thirdValue)
             : this(3, thirdValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5>(T4 t) => new DUnion<T1, T2, T3, T4, T5>(4, t);
-
-        protected DUnion(T4 fourthValue)
+         DUnion(T4 fourthValue)
             : this(4, fourthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5>(T5 t) => new DUnion<T1, T2, T3, T4, T5>(5, t);
-
-        protected DUnion(T5 fifthValue)
+         DUnion(T5 fifthValue)
             : this(5, fifthValue)
         {
         }
 
 
-        protected DUnion(DUnion<T1, T2, T3, T4, T5> source)
+         DUnion(DUnion<T1, T2, T3, T4, T5> source)
             : this(source.Discriminator, source.CoproductValue)
         {
         }
 
-        private DUnion(byte discriminator, object value)
-            : base(5, discriminator, value)
-        {
+         DUnion(byte discriminator, object value)
+        {     
+            Discriminator = discriminator;
+            CoproductValue = value;
         }
-
+         T GetCoproductValue<T>() => (CoproductValue is T t) ? t : default;
+         public object CoproductValue { get; }
+        public byte Discriminator { get; }
         public bool IsFirst => Discriminator == 1; 
         public bool IsSecond => Discriminator == 2; 
         public bool IsThird => Discriminator == 3; 
@@ -343,7 +305,7 @@ namespace CoMonad
             }
         }
 
-        public void Match(
+        public void Switch(
             Action<T1> ifFirst = null,
             Action<T2> ifSecond = null,
             Action<T3> ifThird = null,
@@ -361,67 +323,64 @@ namespace CoMonad
         }
     }
 
-    public class DUnion<T1, T2, T3, T4, T5, T6> : DUnion
+    public struct DUnion<T1, T2, T3, T4, T5, T6> : IDUnion
     {
-
          public static implicit operator DUnion<T1, T2, T3, T4, T5, T6>(T1 t) => new DUnion<T1, T2, T3, T4, T5, T6>(1, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6>(T2 t) => new DUnion<T1, T2, T3, T4, T5, T6>(2, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6>(T3 t) => new DUnion<T1, T2, T3, T4, T5, T6>(3, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6>(T4 t) => new DUnion<T1, T2, T3, T4, T5, T6>(4, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6>(T5 t) => new DUnion<T1, T2, T3, T4, T5, T6>(5, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6>(T6 t) => new DUnion<T1, T2, T3, T4, T5, T6>(6, t);
 
-        protected DUnion(T1 firstValue)
+         DUnion(T1 firstValue)
             : this(1, firstValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6>(T2 t) => new DUnion<T1, T2, T3, T4, T5, T6>(2, t);
-
-        protected DUnion(T2 secondValue)
+         DUnion(T2 secondValue)
             : this(2, secondValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6>(T3 t) => new DUnion<T1, T2, T3, T4, T5, T6>(3, t);
-
-        protected DUnion(T3 thirdValue)
+         DUnion(T3 thirdValue)
             : this(3, thirdValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6>(T4 t) => new DUnion<T1, T2, T3, T4, T5, T6>(4, t);
-
-        protected DUnion(T4 fourthValue)
+         DUnion(T4 fourthValue)
             : this(4, fourthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6>(T5 t) => new DUnion<T1, T2, T3, T4, T5, T6>(5, t);
-
-        protected DUnion(T5 fifthValue)
+         DUnion(T5 fifthValue)
             : this(5, fifthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6>(T6 t) => new DUnion<T1, T2, T3, T4, T5, T6>(6, t);
-
-        protected DUnion(T6 sixthValue)
+         DUnion(T6 sixthValue)
             : this(6, sixthValue)
         {
         }
 
 
-        protected DUnion(DUnion<T1, T2, T3, T4, T5, T6> source)
+         DUnion(DUnion<T1, T2, T3, T4, T5, T6> source)
             : this(source.Discriminator, source.CoproductValue)
         {
         }
 
-        private DUnion(byte discriminator, object value)
-            : base(6, discriminator, value)
-        {
+         DUnion(byte discriminator, object value)
+        {     
+            Discriminator = discriminator;
+            CoproductValue = value;
         }
-
+         T GetCoproductValue<T>() => (CoproductValue is T t) ? t : default;
+         public object CoproductValue { get; }
+        public byte Discriminator { get; }
         public bool IsFirst => Discriminator == 1; 
         public bool IsSecond => Discriminator == 2; 
         public bool IsThird => Discriminator == 3; 
@@ -456,7 +415,7 @@ namespace CoMonad
             }
         }
 
-        public void Match(
+        public void Switch(
             Action<T1> ifFirst = null,
             Action<T2> ifSecond = null,
             Action<T3> ifThird = null,
@@ -476,75 +435,71 @@ namespace CoMonad
         }
     }
 
-    public class DUnion<T1, T2, T3, T4, T5, T6, T7> : DUnion
+    public struct DUnion<T1, T2, T3, T4, T5, T6, T7> : IDUnion
     {
-
          public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T1 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(1, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T2 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(2, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T3 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(3, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T4 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(4, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T5 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(5, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T6 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(6, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T7 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(7, t);
 
-        protected DUnion(T1 firstValue)
+         DUnion(T1 firstValue)
             : this(1, firstValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T2 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(2, t);
-
-        protected DUnion(T2 secondValue)
+         DUnion(T2 secondValue)
             : this(2, secondValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T3 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(3, t);
-
-        protected DUnion(T3 thirdValue)
+         DUnion(T3 thirdValue)
             : this(3, thirdValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T4 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(4, t);
-
-        protected DUnion(T4 fourthValue)
+         DUnion(T4 fourthValue)
             : this(4, fourthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T5 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(5, t);
-
-        protected DUnion(T5 fifthValue)
+         DUnion(T5 fifthValue)
             : this(5, fifthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T6 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(6, t);
-
-        protected DUnion(T6 sixthValue)
+         DUnion(T6 sixthValue)
             : this(6, sixthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7>(T7 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7>(7, t);
-
-        protected DUnion(T7 seventhValue)
+         DUnion(T7 seventhValue)
             : this(7, seventhValue)
         {
         }
 
 
-        protected DUnion(DUnion<T1, T2, T3, T4, T5, T6, T7> source)
+         DUnion(DUnion<T1, T2, T3, T4, T5, T6, T7> source)
             : this(source.Discriminator, source.CoproductValue)
         {
         }
 
-        private DUnion(byte discriminator, object value)
-            : base(7, discriminator, value)
-        {
+         DUnion(byte discriminator, object value)
+        {     
+            Discriminator = discriminator;
+            CoproductValue = value;
         }
-
+         T GetCoproductValue<T>() => (CoproductValue is T t) ? t : default;
+         public object CoproductValue { get; }
+        public byte Discriminator { get; }
         public bool IsFirst => Discriminator == 1; 
         public bool IsSecond => Discriminator == 2; 
         public bool IsThird => Discriminator == 3; 
@@ -583,7 +538,7 @@ namespace CoMonad
             }
         }
 
-        public void Match(
+        public void Switch(
             Action<T1> ifFirst = null,
             Action<T2> ifSecond = null,
             Action<T3> ifThird = null,
@@ -605,83 +560,78 @@ namespace CoMonad
         }
     }
 
-    public class DUnion<T1, T2, T3, T4, T5, T6, T7, T8> : DUnion
+    public struct DUnion<T1, T2, T3, T4, T5, T6, T7, T8> : IDUnion
     {
-
          public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T1 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(1, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T2 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(2, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T3 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(3, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T4 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(4, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T5 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(5, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T6 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(6, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T7 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(7, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T8 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(8, t);
 
-        protected DUnion(T1 firstValue)
+         DUnion(T1 firstValue)
             : this(1, firstValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T2 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(2, t);
-
-        protected DUnion(T2 secondValue)
+         DUnion(T2 secondValue)
             : this(2, secondValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T3 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(3, t);
-
-        protected DUnion(T3 thirdValue)
+         DUnion(T3 thirdValue)
             : this(3, thirdValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T4 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(4, t);
-
-        protected DUnion(T4 fourthValue)
+         DUnion(T4 fourthValue)
             : this(4, fourthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T5 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(5, t);
-
-        protected DUnion(T5 fifthValue)
+         DUnion(T5 fifthValue)
             : this(5, fifthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T6 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(6, t);
-
-        protected DUnion(T6 sixthValue)
+         DUnion(T6 sixthValue)
             : this(6, sixthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T7 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(7, t);
-
-        protected DUnion(T7 seventhValue)
+         DUnion(T7 seventhValue)
             : this(7, seventhValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(T8 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8>(8, t);
-
-        protected DUnion(T8 eighthValue)
+         DUnion(T8 eighthValue)
             : this(8, eighthValue)
         {
         }
 
 
-        protected DUnion(DUnion<T1, T2, T3, T4, T5, T6, T7, T8> source)
+         DUnion(DUnion<T1, T2, T3, T4, T5, T6, T7, T8> source)
             : this(source.Discriminator, source.CoproductValue)
         {
         }
 
-        private DUnion(byte discriminator, object value)
-            : base(8, discriminator, value)
-        {
+         DUnion(byte discriminator, object value)
+        {     
+            Discriminator = discriminator;
+            CoproductValue = value;
         }
-
+         T GetCoproductValue<T>() => (CoproductValue is T t) ? t : default;
+         public object CoproductValue { get; }
+        public byte Discriminator { get; }
         public bool IsFirst => Discriminator == 1; 
         public bool IsSecond => Discriminator == 2; 
         public bool IsThird => Discriminator == 3; 
@@ -724,7 +674,7 @@ namespace CoMonad
             }
         }
 
-        public void Match(
+        public void Switch(
             Action<T1> ifFirst = null,
             Action<T2> ifSecond = null,
             Action<T3> ifThird = null,
@@ -748,91 +698,85 @@ namespace CoMonad
         }
     }
 
-    public class DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9> : DUnion
+    public struct DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9> : IDUnion
     {
-
          public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T1 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(1, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T2 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(2, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T3 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(3, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T4 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(4, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T5 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(5, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T6 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(6, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T7 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(7, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T8 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(8, t);
+         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T9 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(9, t);
 
-        protected DUnion(T1 firstValue)
+         DUnion(T1 firstValue)
             : this(1, firstValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T2 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(2, t);
-
-        protected DUnion(T2 secondValue)
+         DUnion(T2 secondValue)
             : this(2, secondValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T3 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(3, t);
-
-        protected DUnion(T3 thirdValue)
+         DUnion(T3 thirdValue)
             : this(3, thirdValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T4 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(4, t);
-
-        protected DUnion(T4 fourthValue)
+         DUnion(T4 fourthValue)
             : this(4, fourthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T5 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(5, t);
-
-        protected DUnion(T5 fifthValue)
+         DUnion(T5 fifthValue)
             : this(5, fifthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T6 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(6, t);
-
-        protected DUnion(T6 sixthValue)
+         DUnion(T6 sixthValue)
             : this(6, sixthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T7 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(7, t);
-
-        protected DUnion(T7 seventhValue)
+         DUnion(T7 seventhValue)
             : this(7, seventhValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T8 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(8, t);
-
-        protected DUnion(T8 eighthValue)
+         DUnion(T8 eighthValue)
             : this(8, eighthValue)
         {
         }
 
 
-         public static implicit operator DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T9 t) => new DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9>(9, t);
-
-        protected DUnion(T9 ninthValue)
+         DUnion(T9 ninthValue)
             : this(9, ninthValue)
         {
         }
 
 
-        protected DUnion(DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9> source)
+         DUnion(DUnion<T1, T2, T3, T4, T5, T6, T7, T8, T9> source)
             : this(source.Discriminator, source.CoproductValue)
         {
         }
 
-        private DUnion(byte discriminator, object value)
-            : base(9, discriminator, value)
-        {
+         DUnion(byte discriminator, object value)
+        {     
+            Discriminator = discriminator;
+            CoproductValue = value;
         }
-
+         T GetCoproductValue<T>() => (CoproductValue is T t) ? t : default;
+         public object CoproductValue { get; }
+        public byte Discriminator { get; }
         public bool IsFirst => Discriminator == 1; 
         public bool IsSecond => Discriminator == 2; 
         public bool IsThird => Discriminator == 3; 
@@ -879,7 +823,7 @@ namespace CoMonad
             }
         }
 
-        public void Match(
+        public void Switch(
             Action<T1> ifFirst = null,
             Action<T2> ifSecond = null,
             Action<T3> ifThird = null,

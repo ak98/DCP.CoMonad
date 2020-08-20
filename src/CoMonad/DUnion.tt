@@ -10,68 +10,36 @@ using System.Text;
 using System.Reflection;
 namespace CoMonad
 {
-    /// <summary>
-    /// A type that represents a disjunction of types (Discriminated Union), choice from multiple different types e.g. T1 or T2 or T3.
-    /// </summary>
-    public abstract class DUnion
-    {
-        protected DUnion(byte arity, byte discriminator, object value)
-        {
-            if (arity <= 0)
-            {
-                throw new ArgumentException("The arity must be a positive number.");
-            }
-            if (discriminator < 1 || arity < discriminator)
-            {
-                throw new ArgumentException("The discriminator must be from interval [1, arity].");
-            }
 
-            Arity = arity;
-            Discriminator = discriminator;
-            CoproductValue = value;
-        }
-
-
-        public byte Arity { get; }
-        public byte Discriminator { get; }
-        public object CoproductValue { get; }
-        public override int GetHashCode() =>  new object[] { Arity, Discriminator, CoproductValue }.Hash();
-        public override bool Equals(object that) => that is DUnion c2 &&  c2 != null && GetType() == c2.GetType() && Arity == c2.Arity &&  Discriminator == c2.Discriminator && Equals(CoproductValue, c2.CoproductValue);
-        public override string ToString() => $"{GetType().SimpleName()}[{Discriminator}]({CoproductValue?.ToString()})";
-		protected T GetCoproductValue<T>()
-        {
-            if (CoproductValue is T t)
-            {
-                return t;
-            }
-            return default;
-        }
-    }
 <# for (var i = 2; i < MaxArity(); i++) { #>
-    public class <#= CoproductType(i) #> : DUnion
+    public struct <#= CoproductType(i) #> : IDUnion
     {
 <#    if (i > 0) { #>
 <#    for (var j = 1; j <= i; j++) { #>
-
          public static implicit operator <#= CoproductType(i) #>(T<#= j #> t) => new <#= CoproductType(i) #>(<#= j #>, t);
+<#    } #>
+<#    for (var j = 1; j <= i; j++) { #>
 
-        protected DUnion(<#= Type(j) #> <#= GetOrdinal(j).ToLowerInvariant() #>Value)
+         DUnion(<#= Type(j) #> <#= GetOrdinal(j).ToLowerInvariant() #>Value)
             : this(<#= j #>, <#= GetOrdinal(j).ToLowerInvariant() #>Value)
         {
         }
 
 <#    } #>
 
-        protected DUnion(<#= CoproductType(i) #> source)
+         DUnion(<#= CoproductType(i) #> source)
             : this(source.Discriminator, source.CoproductValue)
         {
         }
 
-        private DUnion(byte discriminator, object value)
-            : base(<#= i #>, discriminator, value)
-        {
+         DUnion(byte discriminator, object value)
+        {     
+            Discriminator = discriminator;
+            CoproductValue = value;
         }
-
+         T GetCoproductValue<T>() => (CoproductValue is T t) ? t : default;
+         public object CoproductValue { get; }
+        public byte Discriminator { get; }
 <#    for (var j = 1; j <= i; j++) { #>
         public bool Is<#= GetOrdinal(j) #> => Discriminator == <#= j #>; 
 <#    } #>
@@ -90,7 +58,7 @@ namespace CoMonad
             }
         }
 
-        public void Match(
+        public void Switch(
 <#= Lines(i, x => Indent(12) + "Action<T" + x + "> " + IfIth(x) + " = null", separator: ",") #>)
         {
             switch (Discriminator)

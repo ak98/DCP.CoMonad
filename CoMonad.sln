@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoMonadTest", "src\CoMonadT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{E9CC6D1A-205D-4DFD-A273-AF31CB8B3742}"
 	ProjectSection(SolutionItems) = preProject
+		DUnionType.md = DUnionType.md
 		monads.md = monads.md
 		readme.md = readme.md
 	EndProjectSection

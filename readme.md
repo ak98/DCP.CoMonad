@@ -1,5 +1,8 @@
-﻿# DCP.CoMonad
+# DCP.CoMonad
 ![lang-ext](https://github.com/ak98/DCP.CoMonad/blob/master/comonadlogo256.png?raw=true)
+## Getting Started
+
+> install-package DCP.CoMonad
 
 C# Functional Extensions for the 'Happy Path' 
 =============================================
@@ -357,6 +360,12 @@ A Tuple&lt;int,bool&gt; is an example of creating new type by “multiplying” 
 
 ```
 
+
+#### DUnion in more detail ##
+
+
+
+[Read the details](https://github.com/ak98/DCP.CoMonad/blob/master/DUnionType.md)
 
 
 ## Code of interest

@@ -14,7 +14,7 @@ namespace CoMonadTest
         public void Payment_Model()  //# Scott Wlaschin Domain modelling https://youtu.be/PLFl95c-IiU?t=1169
         {
             Result<Payment> payment = Cash.Create(42)
-                .Map(c => new PaymentMethod(c))
+                .Map(c => ( DUnion<Cash, Cheque, DUnion<MasterCard, Visacard>>)c)
                 .Combine(pm => PaymentAmount.Create(42))
                 .Map(tup => new Payment() { Amount = tup.Item2, Method = tup.Item1, Currency = Currency.USD });
         }
@@ -31,22 +31,13 @@ namespace CoMonadTest
         {
             public CheckNumber CheckNumber { get; set; }
         }
-        class CreditCardInfo : DUnion2<MasterCard, Visacard>//? Discriminated Union 'Or Type'
-        {
-            public CreditCardInfo(MasterCard mc) : base(mc) { }
-            public CreditCardInfo(Visacard visa) : base(visa) { }
-        }
-        class PaymentMethod : DUnion3<Cash, Cheque, CreditCardInfo>//? Discriminated Union 'Or Type'
-        {
-            public PaymentMethod(CreditCardInfo card) : base(card) { }
-            public PaymentMethod(Cheque cheque) : base(cheque) { }
-            public PaymentMethod(Cash cash) : base(cash) { }
-        }
+
+
         class Payment
         {
             public PaymentAmount Amount { get; set; }
             public Currency Currency { get; set; }
-            public PaymentMethod Method { get; set; }
+            public DUnion<Cash, Cheque, DUnion<MasterCard, Visacard>> Method { get; set; }
         }
     }
 }

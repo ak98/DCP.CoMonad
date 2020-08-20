@@ -17,24 +17,20 @@ namespace CoMonadTest
             //https://youtu.be/PLFl95c-IiU?t=2628
             Result<Contact> contact = EmailAddress
                 .Create("test@test.com")
-                .Map(e=> new Contact("test", new ContactInfo(e)));
+                .Map(e => new Contact("test",e));
         }
     }
     class Contact
     {
-        public Contact(string name, ContactInfo primary, ContactInfo? secondaryContact=null) {//Nullability is the "NEW" optional provided u are comfortable with C# 8 nullable options
+        public Contact(string name, DUnion<EmailAddress, PostalContactAddress> primary, DUnion<EmailAddress, PostalContactAddress>? secondaryContact=null) {//Nullability is the "NEW" optional provided u are comfortable with C# 8 nullable options
             Name = name;
             PrimaryContact = primary;
             SecondaryContact = secondaryContact;
         }
         public string Name { get;  }
-        public ContactInfo PrimaryContact { get; }
-        public ContactInfo? SecondaryContact { get;  }
+        public DUnion<EmailAddress, PostalContactAddress> PrimaryContact { get; }
+        public DUnion<EmailAddress, PostalContactAddress>? SecondaryContact { get;  }
     }
-    class ContactInfo : DUnion2<EmailAddress, PostalContactAddress>
-    {
-        public ContactInfo(EmailAddress email) : base(email) { }
-        public ContactInfo(PostalContactAddress address) : base(address) { }
-    }
+
     public class PostalContactAddress { }
 }

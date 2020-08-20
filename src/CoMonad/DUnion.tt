@@ -53,19 +53,21 @@ namespace CoMonad
 <#    if (i > 0) { #>
 <#    for (var j = 1; j <= i; j++) { #>
 
-        protected DUnion<#= i #>(<#= Type(j) #> <#= GetOrdinal(j).ToLowerInvariant() #>Value)
+         public static implicit operator <#= CoproductType(i) #>(T<#= j #> t) => new <#= CoproductType(i) #>(<#= j #>, t);
+
+        protected DUnion(<#= Type(j) #> <#= GetOrdinal(j).ToLowerInvariant() #>Value)
             : this(<#= j #>, <#= GetOrdinal(j).ToLowerInvariant() #>Value)
         {
         }
 
 <#    } #>
 
-        protected DUnion<#= i #>(<#= CoproductType(i) #> source)
+        protected DUnion(<#= CoproductType(i) #> source)
             : this(source.Discriminator, source.CoproductValue)
         {
         }
 
-        private DUnion<#= i #>(byte discriminator, object value)
+        private DUnion(byte discriminator, object value)
             : base(<#= i #>, discriminator, value)
         {
         }
@@ -175,7 +177,7 @@ namespace CoMonad
     public string NaryType(string typeName, int n, string name, int? except = null)
     {
         var arity = n - (except.HasValue ? 1 : 0);
-        return typeName + arity + TypeBracket(n, name: name, except: except);
+        return typeName +  TypeBracket(n, name: name, except: except);
     }
 
     public string ProductType(int i, string name = "T", int? except = null)
